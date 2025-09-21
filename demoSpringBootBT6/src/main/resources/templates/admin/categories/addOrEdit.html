@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{admin/fragments/layout}">
+<head>
+<title>Add/Edit Category</title>
+</head>
+<body>
+	<section layout:fragment="content">
+		<div class="card">
+			<div class="card-header">
+				<h3
+					th:text="${category.categoryId != null ? 'Edit Category' : 'Add New Category'}"></h3>
+			</div>
+			<div class="card-body">
+				<form th:action="@{/admin/categories/saveOrUpdate}" method="post"
+					th:object="${category}" enctype="multipart/form-data">
+					<input type="hidden" th:field="*{categoryId}" />
+
+					<div class="mb-3">
+						<label for="categoryName" class="form-label">Category Name</label>
+						<input type="text" class="form-control" id="categoryName"
+							th:field="*{categoryName}" required>
+					</div>
+
+					<div class="mb-3">
+						<label for="iconFile" class="form-label">Icon</label> <input
+							type="file" class="form-control" id="iconFile" name="iconFile">
+						<div th:if="${category.icon != null}" class="mt-2">
+							<img th:src="@{'/admin/categories/uploads/' + ${category.icon}}"
+								width="100px" class="img-thumbnail" />
+						</div>
+					</div>
+
+					<a th:href="@{/admin/categories}" class="btn btn-secondary">Back
+						to List</a>
+					<button type="submit" class="btn btn-primary">Save</button>
+				</form>
+			</div>
+		</div>
+	</section>
+</body>
+</html>
