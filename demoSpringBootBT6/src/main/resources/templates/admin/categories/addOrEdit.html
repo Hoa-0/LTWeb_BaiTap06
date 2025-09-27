@@ -1,43 +1,44 @@
-<!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{admin/fragments/layout}">
+	layout:decorate="~{admin/layout}">
 <head>
-<title>Add/Edit Category</title>
+<title>Add or Edit Category</title>
 </head>
 <body>
-	<section layout:fragment="content">
-		<div class="card">
-			<div class="card-header">
-				<h3
-					th:text="${category.categoryId != null ? 'Edit Category' : 'Add New Category'}"></h3>
+	<div layout:fragment="content" class="card shadow p-4">
+		<h4
+			th:text="${category.categoryId != null ? 'Chỉnh sửa Category' : 'Thêm Category'}"></h4>
+
+		<form th:action="@{/admin/categories/save}" th:object="${category}"
+			method="post" enctype="multipart/form-data">
+
+			<input type="hidden" th:field="*{categoryId}" />
+
+			<!-- Category Name -->
+			<div class="mb-3">
+				<label class="form-label">Tên Category</label> <input type="text"
+					th:field="*{categoryName}" class="form-control" required />
 			</div>
-			<div class="card-body">
-				<form th:action="@{/admin/categories/saveOrUpdate}" method="post"
-					th:object="${category}" enctype="multipart/form-data">
-					<input type="hidden" th:field="*{categoryId}" />
 
-					<div class="mb-3">
-						<label for="categoryName" class="form-label">Category Name</label>
-						<input type="text" class="form-control" id="categoryName"
-							th:field="*{categoryName}" required>
-					</div>
-
-					<div class="mb-3">
-						<label for="iconFile" class="form-label">Icon</label> <input
-							type="file" class="form-control" id="iconFile" name="iconFile">
-						<div th:if="${category.icon != null}" class="mt-2">
-							<img th:src="@{'/admin/categories/uploads/' + ${category.icon}}"
-								width="100px" class="img-thumbnail" />
-						</div>
-					</div>
-
-					<a th:href="@{/admin/categories}" class="btn btn-secondary">Back
-						to List</a>
-					<button type="submit" class="btn btn-primary">Save</button>
-				</form>
+			<!-- Upload Icon -->
+			<div class="mb-3">
+				<label class="form-label">Ảnh (Icon)</label> <input type="file"
+					name="file" class="form-control" accept="image/*" />
+				<div th:if="${category.icon}">
+					<p class="mt-2">Ảnh hiện tại:</p>
+					<img th:src="@{'/images/' + ${category.icon}}"
+						class="img-thumbnail" style="max-width: 150px;" />
+				</div>
 			</div>
-		</div>
-	</section>
+
+			<!-- Buttons -->
+			<button type="submit" class="btn btn-success">
+				<i class="fa-solid fa-floppy-disk"></i> Lưu
+			</button>
+			<a th:href="@{/admin/categories}" class="btn btn-secondary">Quay
+				lại</a>
+		</form>
+	</div>
 </body>
 </html>
